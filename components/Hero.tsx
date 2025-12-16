@@ -3,13 +3,6 @@
 import { useEffect, useRef } from "react";
 import { SOCIAL_LINKS } from "../constants";
 import ElectricBorder from "./ElectricBorder";
-import Picture from "../Images/picture.jpeg";
-
-declare global {
-  interface Window {
-    Typed: any;
-  }
-}
 
 const AnimatedBg = () => (
   <>
@@ -36,11 +29,7 @@ const Hero: React.FC = () => {
 
     // Wait for Typed.js to load
     const initTyped = () => {
-      if (
-        el.current &&
-        typeof window !== "undefined" &&
-        (window as any).Typed
-      ) {
+      if (el.current && typeof window !== "undefined" && window.Typed) {
         const options = {
           strings: ["Developer", "Designer"],
           loop: true,
@@ -49,17 +38,17 @@ const Hero: React.FC = () => {
           backDelay: 2000,
         };
 
-        typedRef.current = new (window as any).Typed(el.current, options);
+        typedRef.current = new window.Typed(el.current, options);
       }
     };
 
     // Check if Typed is already loaded
-    if (typeof window !== "undefined" && (window as any).Typed) {
+    if (typeof window !== "undefined" && window.Typed) {
       initTyped();
     } else {
       // Wait for the script to load
       checkInterval = setInterval(() => {
-        if (typeof window !== "undefined" && (window as any).Typed) {
+        if (typeof window !== "undefined" && window.Typed) {
           if (checkInterval) clearInterval(checkInterval);
           initTyped();
         }
@@ -166,7 +155,8 @@ const Hero: React.FC = () => {
                 className="w-full h-full object-cover rounded-full"
                 onError={(e) => {
                   // Fallback to placeholder if image doesn't load
-                  (e.target as HTMLImageElement).src = 'https://picsum.photos/380/380';
+                  (e.target as HTMLImageElement).src =
+                    "https://picsum.photos/380/380";
                 }}
               />
             </ElectricBorder>
